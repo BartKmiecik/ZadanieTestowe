@@ -8,6 +8,13 @@ public class AgentsPool : MonoBehaviour
     [SerializeField] private GameObject agentPrefab;
     private List<GameObject> agentsList = new List<GameObject>();
     private int startingPoolCount = 5;
+    private GetRandomSpotOnMap getRandomSpot;
+
+    private void Awake()
+    {
+        getRandomSpot = FindObjectOfType<GetRandomSpotOnMap>();
+    }
+
 
     private void Start()
     {
@@ -41,6 +48,7 @@ public class AgentsPool : MonoBehaviour
     private GameObject CreateAndAddNewAgent()
     {
         GameObject temp = Instantiate(agentPrefab, transform);
+        temp.GetComponent<AgentMovementsController>().SetRandomMapController(getRandomSpot);
         temp.SetActive(false);
         agentsList.Add(temp);
         return temp;
