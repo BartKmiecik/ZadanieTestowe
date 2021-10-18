@@ -30,7 +30,6 @@ public class AgentSpawner : MonoBehaviour
         while (true)
         {
             float randomTime = Random.Range(timeRangeMin, timeRangeMax);
-            Debug.Log(randomTime);
             yield return new WaitForSeconds(randomTime);
             SpawnAgent();
         }

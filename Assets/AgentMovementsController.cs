@@ -7,6 +7,9 @@ public class AgentMovementsController : MonoBehaviour
 {
     private NavMeshAgent agent;
     private GetRandomSpotOnMap getRandomSpotOnMap;
+    private float deeleyTesting = 1.5f;
+    private Vector3 destination;
+    private float stoppingDistance = 6f;
 
     public void SetRandomMapController(GetRandomSpotOnMap obj)
     {
@@ -21,6 +24,7 @@ public class AgentMovementsController : MonoBehaviour
 
     private void OnEnable()
     {
+        StopAllCoroutines();
         if(getRandomSpotOnMap != null)
         {
             SetNewDestination();
@@ -29,8 +33,22 @@ public class AgentMovementsController : MonoBehaviour
 
     private void SetNewDestination()
     {
-        Vector3 pos = getRandomSpotOnMap.GetRandomGameBoardLocation();
-        agent.SetDestination(pos);
+        destination = getRandomSpotOnMap.GetRandomGameBoardLocation();
+        agent.SetDestination(destination);
+        StopAllCoroutines();
+        StartCoroutine(CheckIfDestinationReached());
+    }
+
+    IEnumerator CheckIfDestinationReached()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(deeleyTesting);
+            if(Vector3.Distance(destination, transform.position) <= stoppingDistance)
+            {
+                SetNewDestination();
+            }
+        }
     }
 
 }
