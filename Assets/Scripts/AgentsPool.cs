@@ -9,10 +9,12 @@ public class AgentsPool : MonoBehaviour
     private List<GameObject> agentsList = new List<GameObject>();
     private int startingPoolCount = 5;
     private GetRandomSpotOnMap getRandomSpot;
+    private Delegator delegator;
 
     private void Awake()
     {
         getRandomSpot = FindObjectOfType<GetRandomSpotOnMap>();
+        delegator = FindObjectOfType<Delegator>();
     }
 
 
@@ -49,6 +51,7 @@ public class AgentsPool : MonoBehaviour
     {
         GameObject temp = Instantiate(agentPrefab, transform);
         temp.GetComponent<AgentMovementsController>().SetRandomMapController(getRandomSpot);
+        temp.GetComponent<Stats>().SetDelegator(delegator);
         temp.SetActive(false);
         agentsList.Add(temp);
         return temp;

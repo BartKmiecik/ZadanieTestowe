@@ -9,14 +9,18 @@ public class SelectionController : MonoBehaviour
     [SerializeField] private GameObject canvas;
     [SerializeField] private Text selectedAgentName;
     [SerializeField] private Transform selectedAgentHealthsHolder;
+    private GameObject selectedAgent;
     private Camera cam;
     private SelectionIndicator selectionIndicator;
+    private Delegator delegator;
 
     private void Awake()
     {
+        delegator = FindObjectOfType<Delegator>();
         cam = Camera.main;
         selectionIndicator = GetComponent<SelectionIndicator>();
         canvas.SetActive(false);
+        delegator.updateUI += UpdateUI;
     }
 
     private void Update()
@@ -28,11 +32,10 @@ public class SelectionController : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, 1000f, mask))
             {
-                selectionIndicator.SelectAgent(hit.collider.gameObject);
-                int agentHealth = hit.collider.GetComponent<Stats>().GetCurrentHealth();
-                string agentName = hit.collider.name;
+                selectedAgent = hit.collider.gameObject;
+                selectionIndicator.SelectAgent(selectedAgent);
                 canvas.SetActive(true);
-                PopulateUI(agentHealth, agentName);
+                UpdateUI();
                 return;
             }
             selectionIndicator.DeselectAgent();
@@ -54,4 +57,19 @@ public class SelectionController : MonoBehaviour
             }
         }
     }
+
+    public void UpdateUI()
+    {
+        int agentHealth = selectedAgent.GetComponent<Stats>().GetCurrentHealth();
+        if(agentHealth > 0)
+        {
+            string agentName = selectedAgent.name;
+            PopulateUI(agentHealth, agentName);
+        } else
+        {
+            selectionIndicator.DeselectAgent();
+            canvas.SetActive(false);
+        }
+    }
+
 }

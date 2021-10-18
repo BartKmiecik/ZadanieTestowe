@@ -7,6 +7,21 @@ public class Stats : MonoBehaviour
     [SerializeField] private int maxHealth = 3;
     private int currentHealth;
 
+    private Delegator delegator;
+    private Renderer rend;
+    private Color defaultColor;
+
+    private void Awake()
+    {
+        rend = GetComponent<Renderer>();
+        defaultColor = rend.material.color;
+    }
+
+    public void SetDelegator(Delegator delegator)
+    {
+        this.delegator = delegator;
+    }
+
     private void OnEnable()
     {
         currentHealth = maxHealth;
@@ -17,6 +32,10 @@ public class Stats : MonoBehaviour
         if (collision.collider.CompareTag("Agent"))
         {
             --currentHealth;
+            if(rend.material.color != defaultColor)
+            {
+                delegator.updateUI();
+            }
             if (currentHealth <= 0)
             {
                 gameObject.SetActive(false);
