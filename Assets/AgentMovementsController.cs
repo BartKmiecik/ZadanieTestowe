@@ -33,10 +33,13 @@ public class AgentMovementsController : MonoBehaviour
 
     private void SetNewDestination()
     {
-        destination = getRandomSpotOnMap.GetRandomGameBoardLocation();
-        agent.SetDestination(destination);
-        StopAllCoroutines();
-        StartCoroutine(CheckIfDestinationReached());
+        if (agent.isActiveAndEnabled)
+        {
+            destination = getRandomSpotOnMap.GetRandomGameBoardLocation();
+            agent.SetDestination(destination);
+            StopAllCoroutines();
+            StartCoroutine(CheckIfDestinationReached());
+        }
     }
 
     IEnumerator CheckIfDestinationReached()

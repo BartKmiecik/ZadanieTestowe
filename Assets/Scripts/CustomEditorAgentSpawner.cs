@@ -15,7 +15,7 @@ public class CustomEditorAgentSpawner : Editor
         GUILayout.BeginHorizontal();
 
         spawner.timeRangeMin = EditorGUILayout.Slider("Min", spawner.timeRangeMin, 2, spawner.timeRangeMax);
-        spawner.timeRangeMax = EditorGUILayout.Slider("Min", spawner.timeRangeMax, spawner.timeRangeMax, 10);
+        spawner.timeRangeMax = EditorGUILayout.Slider("Max", spawner.timeRangeMax, spawner.timeRangeMin, 10);
 
         GUILayout.EndHorizontal();
     }
